@@ -31,10 +31,19 @@
 </template>
 
 <script>
+
+import {AXIOS} from "@/http-commons";
+
 export default {
   name: 'HelloWorld',
   props: {
     msg: String
+  },
+  mounted() {
+    AXIOS.get('prod', { params: { nodes: 64, order : 6 } })
+        .then((result) => {
+      console.log(result)
+    })
   }
 }
 </script>
