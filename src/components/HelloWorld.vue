@@ -40,9 +40,9 @@ export default {
     msg: String
   },
   mounted() {
-    AXIOS.get('prod', { params: { nodes: 64, order : 6 } })
+    AXIOS.get('', { params: { nodes: 64, order : 6 } })
         .then((result) => {
-      console.log(result)
+      console.log(result.data)
     })
   }
 }
