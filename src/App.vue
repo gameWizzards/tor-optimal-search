@@ -88,7 +88,8 @@ export default {
               edges: result.data.edgesQuantity,
               bisection: result.data.bisectionWidth,
               cost: result.data.hardwareCost,
-              hOrder: result.data.hypercubeOrder
+              hOrder: result.data.hypercubeOrder,
+              numbers: result.data.numbers.join('*')
             }]
           })
       .catch(reason => {
@@ -106,6 +107,7 @@ export default {
         {text: 'Max Diameter', value: 'diameter'},
         {text: 'Bisection Width', value: 'bisection'},
         {text: 'Hardware Cost', value: 'cost'},
+        {text: 'Dimensions', value: 'numbers'},
       ]
     }
   },
