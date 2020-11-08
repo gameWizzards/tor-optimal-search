@@ -45,17 +45,7 @@
             type="submit" :disabled="!(order && nodes)">
           Configure
         </v-btn>
-
-<!--        <v-alert-->
-<!--            border="top"-->
-<!--            colored-border-->
-<!--            type="info"-->
-<!--            elevation="1"-->
-<!--        >-->
-<!--          Order - positive natural number, number - pow(order)-->
-<!--        </v-alert>-->
       </v-container>
-
       <v-container>
         <v-data-table
             :headers="headers"
@@ -64,6 +54,17 @@
             class="elevation-1"
             hide-default-footer
         >
+          <template v-slot:top>
+            <v-alert
+                border="top"
+                colored-border
+                type="error"
+                elevation="2"
+                v-if="errors"
+            >
+              {{errorMessage}}
+            </v-alert>
+          </template>
         </v-data-table>
       </v-container>
     </v-main>
@@ -79,6 +80,7 @@ export default {
   components: {},
   methods: {
     config() {
+      this.errors = false
       AXIOS.get('', {params: {order: this.order, nodes: this.nodes}})
           .then((result) => {
             this.configs = [{
@@ -92,8 +94,10 @@ export default {
               numbers: result.data.numbers.join('*')
             }]
           })
-      .catch(reason => {
-        console.log(reason)
+      .catch((reason) => {
+        this.errorMessage = reason
+        this.configs = []
+        this.errors = true
       })
     }
   },
@@ -109,6 +113,14 @@ export default {
         {text: 'Hardware Cost', value: 'cost'},
         {text: 'Dimensions', value: 'numbers'},
       ]
+    },
+    configTypes() {
+      return [
+          'Only Selected',
+          'Upper Optimal',
+          'Lower Optimal',
+          'All Possible'
+      ]
     }
   },
   data: () => ({
@@ -117,7 +129,9 @@ export default {
     configs: [],
     rules: [
       value => value !== 0
-    ]
+    ],
+    errors:false,
+    errorMessage: null,
   }),
 };
 </script>
