@@ -90,8 +90,7 @@ export default {
   methods: {
     config() {
       this.errors = false
-      console.log(this.searchType.value)
-      AXIOS.get('', {params: {order: this.order, nodes: this.nodes}})
+      AXIOS.get('config/' + this.searchType.value, {params: {order: this.order, nodes: this.nodes}})
           .then((result) => {
             this.configs = [{
               nodes: this.nodes,
