@@ -39,8 +39,17 @@
                       label="Order"
                       v-model="order">
         </v-text-field>
-
+        <v-select
+            v-model="searchType"
+            placeholder="Select search type"
+            style="width: 50%"
+            :items="configTypes"
+            item-text="text"
+            item-value="value"
+            return-object>
+        </v-select>
         <v-btn
+            style="overflow: hidden"
             v-on:click="config"
             type="submit" :disabled="!(order && nodes)">
           Configure
@@ -62,7 +71,7 @@
                 elevation="2"
                 v-if="errors"
             >
-              {{errorMessage}}
+              {{ errorMessage }}
             </v-alert>
           </template>
         </v-data-table>
@@ -81,6 +90,7 @@ export default {
   methods: {
     config() {
       this.errors = false
+      console.log(this.searchType.value)
       AXIOS.get('', {params: {order: this.order, nodes: this.nodes}})
           .then((result) => {
             this.configs = [{
@@ -94,11 +104,11 @@ export default {
               numbers: result.data.numbers.join('*')
             }]
           })
-      .catch((reason) => {
-        this.errorMessage = reason
-        this.configs = []
-        this.errors = true
-      })
+          .catch((reason) => {
+            this.errorMessage = reason
+            this.configs = []
+            this.errors = true
+          })
     }
   },
   computed: {
@@ -116,10 +126,10 @@ export default {
     },
     configTypes() {
       return [
-          'Only Selected',
-          'Upper Optimal',
-          'Lower Optimal',
-          'All Possible'
+        {value: "SINGLE", text : 'Only Selected'},
+        {value: "UPPER", text : 'Upper Optimal'},
+        {value: "LOWER", text : 'Lower Optimal'},
+        {value: "ALL", text : 'All Possible'},
       ]
     }
   },
@@ -130,8 +140,9 @@ export default {
     rules: [
       value => value !== 0
     ],
-    errors:false,
+    errors: false,
     errorMessage: null,
+    searchType: {value: null, text: null},
   }),
 };
 </script>
