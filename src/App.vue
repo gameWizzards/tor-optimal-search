@@ -16,10 +16,10 @@
         />
       </div>
 
-      <v-spacer></v-spacer>
+      <v-spacer>Estimating the cost of the toroidal-lattice communication network</v-spacer>
 
       <v-btn
-          href="https://github.com/vuetifyjs/vuetify/releases/latest"
+          href="http://reposit.nupp.edu.ua/handle/PoltNTU/5699"
           target="_blank"
           text
       >
@@ -90,18 +90,19 @@ export default {
   methods: {
     config() {
       this.errors = false
+      this.configs = []
       AXIOS.get('config/' + this.searchType.value, {params: {order: this.order, nodes: this.nodes}})
           .then((result) => {
-            this.configs = [{
+            result.data.forEach(config => this.configs.push({
               nodes: this.nodes,
               order: this.order,
-              diameter: result.data.maxDiametr,
-              edges: result.data.edgesQuantity,
-              bisection: result.data.bisectionWidth,
-              cost: result.data.hardwareCost,
-              hOrder: result.data.hypercubeOrder,
-              numbers: result.data.numbers.join('*')
-            }]
+              diameter: config.maxDiametr,
+              edges: config.edgesQuantity,
+              bisection: config.bisectionWidth,
+              cost: config.hardwareCost,
+              hOrder: config.hypercubeOrder,
+              numbers: config.numbers.join('*')
+            }));
           })
           .catch((reason) => {
             this.errorMessage = reason
@@ -125,10 +126,10 @@ export default {
     },
     configTypes() {
       return [
-        {value: "SINGLE", text : 'Only Selected'},
-        {value: "UPPER", text : 'Upper Optimal'},
-        {value: "LOWER", text : 'Lower Optimal'},
-        {value: "ALL", text : 'All Possible'},
+        {value: "SINGLE", text: 'Only Selected'},
+        {value: "UPPER", text: 'Upper Optimal'},
+        {value: "LOWER", text: 'Lower Optimal'},
+        {value: "ALL", text: 'All Possible'},
       ]
     }
   },
