@@ -94,8 +94,8 @@ export default {
       AXIOS.get('config/' + this.searchType.value, {params: {order: this.order, nodes: this.nodes}})
           .then((result) => {
             result.data.forEach(config => this.configs.push({
-              nodes: this.nodes,
-              order: this.order,
+              nodes: config.nodes,
+              order: config.order,
               diameter: config.maxDiametr,
               edges: config.edgesQuantity,
               bisection: config.bisectionWidth,
